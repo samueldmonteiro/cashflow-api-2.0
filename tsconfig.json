@@ -1,0 +1,43 @@
+{
+  "compilerOptions": {
+    // Output
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "rootDir": "/",
+    "outDir": "dist",
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
+    // Strictness
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // Compatibility
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+
+    // Decorators (tsyringe)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // Node types
+    "types": ["node"],
+
+    // Module behavior
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "verbatimModuleSyntax": false,
+
+    // JSON imports
+    "resolveJsonModule": true
+  },
+  "include": ["src","tests", "generated/**/*", "docs"],
+  "exclude": ["node_modules", "dist"]
+}
