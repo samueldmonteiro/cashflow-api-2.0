@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  password   String
+  categories Category[]
+  createdAt  DateTime   @default(now())
+  movements  Movement[]
+
+  @@map("users")
+}
+
+model Category {
+  id        String     @id @default(uuid())
+  movements Movement[]
+  name      String
+  user      User       @relation(fields: [userId], references: [id])
+  userId    String
+
+  @@map("categories")
+}
+
+model Movement {
+  id          String       @id @default(uuid())
+  category    Category?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  categoryId  String?
+  user        User         @relation(fields: [userId], references: [id])
+  type        MovementType
+  description String?
+  value       Decimal
+  date        DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  userId      String
+
+  @@map("movements")
+}
+
+enum MovementType {
+  INCOME
+  EXPENSE
+}
