@@ -32,7 +32,7 @@ export class LoginUseCase {
 
     if (!doesPasswordMatches) throw new InvalidCredentialsError();
 
-    const token = await this.tokenGenerator.generate({sub: userExists.id});
+    const token = await this.tokenGenerator.generate({ sub: userExists.id });
 
     return {
       token,

@@ -5,7 +5,7 @@ import { makeGetUserAuthenticatedUseCase } from '@/infra/factories/make-get-user
 
 export class AuthController {
 
-  async login(_req: FastifyRequest, reply: FastifyReply){
+  async login(_req: FastifyRequest, reply: FastifyReply) {
 
     const data = AuthLoginSchema.parse(_req.body);
     const loginUseCase = makeLoginUseCase();
@@ -13,10 +13,11 @@ export class AuthController {
     return reply.send(response);
   }
 
-  async me(_req: FastifyRequest, reply: FastifyReply){
+  async me(_req: FastifyRequest, reply: FastifyReply) {
 
     const userId = _req.currentUser.id;
     const loginUseCase = makeGetUserAuthenticatedUseCase();
     const response = await loginUseCase.execute(userId);
     return reply.send(response);
-  }}
+  }
+}
