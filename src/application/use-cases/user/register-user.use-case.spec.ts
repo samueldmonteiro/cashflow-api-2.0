@@ -9,6 +9,7 @@ import { TokenGenerator } from '@/application/cryptography/token-generator';
 const userRepositoryMock: Mocked<UserRepository> = {
   findByEmail: vi.fn(),
   create: vi.fn(),
+  findById: vi.fn()
 };
 
 const passwordHasherMock: Mocked<PasswordHasher> = {

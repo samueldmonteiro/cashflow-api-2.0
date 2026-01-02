@@ -4,6 +4,15 @@ import { prisma } from '@/lib/prisma';
 
 export class PrismaUserReposiory implements UserRepository {
 
+  async findById(id: string): Promise<User | null> {
+    const user = await prisma.user.findUnique({
+      where: { id }
+    });
+    if (!user) return null;
+
+    return new User(user);
+  }
+
   async create(user: User): Promise<User> {
     const created = await prisma.user.create({
       data: {
@@ -14,7 +23,7 @@ export class PrismaUserReposiory implements UserRepository {
     });
     return new User(created);
   }
-  
+
   async findByEmail(email: string): Promise<User | null> {
     const user = await prisma.user.findUnique({
       where: { email }
