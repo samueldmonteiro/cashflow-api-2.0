@@ -12,7 +12,6 @@ export class PrismaUserReposiory implements UserRepository {
         name: user.name,
       }
     });
-
     return new User(created);
   }
   

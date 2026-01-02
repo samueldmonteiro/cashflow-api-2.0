@@ -45,7 +45,7 @@ describe('User Entity (Unit)', () => {
 
     expect(() => {
       user.changePassword('123');
-    }).toThrow('Senha Fraca');
+    }).toThrow('Senha deve conter mais de 5 caracteres');
   });
 
   it('should change name', () => {
@@ -73,8 +73,8 @@ describe('User Entity (Unit)', () => {
     });
 
     expect(()=>{
-      user.changeName('12');
-    }).toThrow('Nome inválido');
+      user.changeName('te');
+    }).toThrow('Nome deve conter mais de 3 caracteres');
   });
 
   it('should serialize without exposing password (toJSON)', () => {

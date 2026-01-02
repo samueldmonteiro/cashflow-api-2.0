@@ -1,9 +1,10 @@
 import { User } from '@/domain/entities/user.entity';
-import { AppError } from '@/domain/errors/app.error';
+import { InvalidCredentialsError } from '@/domain/errors/invalid-credentials.error';
 import { UserRepository } from '@/domain/repositories/user.repository';
-import { PasswordHasherService } from '@/domain/services/password-hasher.service';
+import { PasswordHasher } from '@/application/cryptography/password-hasher';
+import { TokenGenerator } from '@/application/cryptography/token-generator';
 
-export interface LoginInput {
+export interface LoginRequest {
   email: string,
   password: string
 }
@@ -16,21 +17,22 @@ export interface LoginResponse {
 export class LoginUseCase {
   constructor(
     private userRepo: UserRepository,
-    private passwordHasher: PasswordHasherService
+    private passwordHasher: PasswordHasher,
+    private tokenGenerator: TokenGenerator
   ) { }
 
-  async execute(input: LoginInput): Promise<LoginResponse> {
+  async execute(input: LoginRequest): Promise<LoginResponse> {
     const userExists = await this.userRepo.findByEmail(input.email);
-    if (!userExists) throw new AppError('Login Incorreto', 401);
+    if (!userExists) throw new InvalidCredentialsError();
 
-    const isValidPassword = await this.passwordHasher.compare(
+    const doesPasswordMatches = await this.passwordHasher.compare(
       userExists.getPassword(),
       input.password
     );
 
-    if (!isValidPassword) throw new AppError('Login Incorreto', 401);
+    if (!doesPasswordMatches) throw new InvalidCredentialsError();
 
-    const token = 'jwt-token';
+    const token = await this.tokenGenerator.generate({sub: userExists.id});
 
     return {
       token,

@@ -5,6 +5,7 @@ import z, { ZodError } from 'zod';
 import { AppError } from './domain/errors/app.error';
 import { env } from './env';
 import { authRoutes } from './routes/auth.route';
+import fastifyJwt from '@fastify/jwt';
 
 const app = Fastify({
   logger: true,
@@ -12,6 +13,9 @@ const app = Fastify({
 
 app.register(userRoutes);
 app.register(authRoutes);
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+});
 
 app.setErrorHandler((err, request, reply) => {
   if (err instanceof ZodError) {

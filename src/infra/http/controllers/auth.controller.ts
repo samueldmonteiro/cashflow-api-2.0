@@ -1,22 +1,14 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { AuthLoginSchema } from '../schemas/auth-login.schema';
-import { LoginUseCase } from '@/application/use-cases/auth/login.use-case';
-import { PrismaUserReposiory } from '@/infra/database/prisma/repositories/prisma-user-repository';
-import { Argon2PasswordHasher } from '@/infra/services/argon2-password-hasher.service';
+import { makeLoginUseCase } from '@/infra/factories/make-login-use-case.factory';
 
 export class AuthController {
 
   async login(_req: FastifyRequest, reply: FastifyReply){
 
     const data = AuthLoginSchema.parse(_req.body);
-
-    const useCase = new LoginUseCase(
-      new PrismaUserReposiory(),
-      new Argon2PasswordHasher()
-    );
-
-    const response = await useCase.execute(data);
-
+    const loginUseCase = makeLoginUseCase();
+    const response = await loginUseCase.execute(data);
     return reply.send(response);
   }
 }

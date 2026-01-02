@@ -1,5 +1,5 @@
 import { describe, expect, it, beforeEach } from 'vitest';
-import { Argon2PasswordHasher } from '@/infra/services/argon2-password-hasher.service';
+import { Argon2PasswordHasher } from '@/infra/criptography/argon2-password-hasher';
 
 let hasher: Argon2PasswordHasher;
 
